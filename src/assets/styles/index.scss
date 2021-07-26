@@ -1,0 +1,14 @@
+@import'./init.scss';
+
+.title-tip {
+  display: flex;
+  align-items: center;
+  &::before {
+    content: '';
+    display: inline-block;
+    margin: 0 5px 0 0;
+    width: 2px;
+    height: 12px;
+    background: #279af2;
+  }
+}

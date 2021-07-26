@@ -1,0 +1,19 @@
+/*
+ * @Description: 
+ * @Author: 李继玄（15201002062@163.com）
+ * @Date: 2021-05-19 14:16:42
+ * @FilePath: /ucenter-messageflat-web-view/src/assets/styles/element-variables.scss
+ */
+
+/* 改变主题色变量 */
+@import "./common.scss";
+
+// $--color-primary: rgb(33, 177, 177);
+$--color-primary: $color;
+$--border-radius-base: 4px;
+
+// @import "~element-ui/packages/theme-chalk/src/index";
+
+/* 改变主题色变量 */
+$--font-path: "element-plus/lib/theme-chalk/fonts";
+@import "element-plus/packages/theme-chalk/src/index";
