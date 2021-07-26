@@ -2,7 +2,7 @@
  * @Author: web.王佳豪
  * @Date: 2020-11-12 15:39:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-26 09:54:45
+ * @LastEditTime: 2021-07-26 16:18:03
  * @LastEditTime: 2021-04-11 16:11:36
  * @Description: file content
  */
@@ -13,6 +13,7 @@ for (const path in modulesFiles) {
   modules = [].concat(modules, ...Object.values({ ...modulesFiles[path] }));
 }
 
+console.log(modules);
 const app = {
   namespaced: true,
   state: () => ({

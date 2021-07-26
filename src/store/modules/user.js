@@ -9,7 +9,7 @@
 const state = () => ({
   userInfo: {
     name: "李大玄",
-    token: '1234567890'
+    token: ''
   },
 })
 
@@ -19,16 +19,22 @@ const getters = {
   },
 }
 
-const actions = {
-  addSex({ state, commit }, product) {
-    commit('setSex', product)
+const mutations = {
+  SEX(state, status) {
+    state.userInfo.sex = status;
+  },
+  TOKEN(state, status) {
+    state.userInfo.token = status;
   }
 }
 
-const mutations = {
-  setSex(state, status) {
-    state.userInfo.sex = status;
-  }
+const actions = {
+  setSex({ state, commit }, product) {
+    commit('SEX', product)
+  },
+  setToken({ state, commit }, product) {
+    commit('TOKEN', product)
+  },
 }
 
 export default {

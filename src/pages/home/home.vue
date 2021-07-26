@@ -82,9 +82,9 @@ export default {
 
   setup() {},
   created() {
-    this.$store.dispatch('user/addSex', '男');
+    this.$store.dispatch('user/setSex', '男');
     setTimeout(() => {
-      this.addSex('女');
+      this.setSex('女');
     }, 3000);
     // this.getdata();
   },
@@ -94,7 +94,7 @@ export default {
     },
   }),
   methods: {
-    ...mapActions('user', ['addSex']),
+    ...mapActions('user', ['setSex']),
 
     async getdata() {
       const res = await getConfigInfo();

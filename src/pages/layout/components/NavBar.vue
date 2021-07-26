@@ -21,7 +21,8 @@
         align="center"
         @select="handleSelect"
       >
-        <el-menu-item v-for="menu in menuList" :index="menu.path" :key="menu.id">
+        <el-menu-item v-for="menu in menuList" :index="menu.path" :key="menu.id" :disabled="menu.disabled">
+          <!-- {{menu}} -->
           <div class="flex flex-aic">
             <IconFont :type="menu.icon"></IconFont>
             {{ menu.name }}
@@ -31,7 +32,6 @@
     </div>
 
     <div class="flex flex-aic pr25">
-      <!-- <IconFont type="icon-user" class="mr10" :size="30"></IconFont> -->
       <div class="name mr10 flex flex-aic flex-ccc">{{ getUserName() }}</div>
       <!-- 用户名下拉菜单 -->
       <el-dropdown class="header-user-name" trigger="click" @command="handleCommand">
@@ -64,10 +64,12 @@
 
 <script>
 // import { getLoginUserData } from "@/model/admin";
+import _ from 'lodash';
 import fullScreen from '../mixins/fullScreen';
 import { mapGetters } from 'vuex';
 import envOption from '@/env';
 import { mapState, mapActions } from 'vuex';
+import Template from '../../../Template.vue';
 
 export default {
   name: 'NavBar',
@@ -89,6 +91,7 @@ export default {
         let newArr = [arr[0], arr[1]];
         let str = newArr.join('/');
         const menuList = this.menuList || [];
+        console.log(menuList);
         for (let i = 0; i < menuList.length; i++) {
           if (menuList[i].path.search(str) != -1) {
             this.defaultActive = menuList[i].path;
@@ -104,11 +107,16 @@ export default {
   computed: {
     ...mapState({
       menuList: (state) => {
-        return state.navMenu.menuList;
+        const menuList = _.compact(Array.from(state.navMenu.menuList).map(item => {
+          if (!item.visible) {
+            return _.assign({}, item);
+          }
+        }));
+        return [].concat(menuList || []);
       },
     }),
   },
-  components: {},
+  components: {Template},
   methods: {
     // 点击菜单
     handleSelect(key) {
@@ -117,12 +125,10 @@ export default {
     },
     handleCommand(command) {
       if (command == 'loginout') {
-        // this.$router.push('/login');
-        // this.$store.dispatch('LogOut');
         localStorage.clear();
-        if (envOption.env.VUE_APP_CURRENTMODE == 'local') {
-          let redirectUrl = window.location.origin + window.location.pathname;
-          let url = `http://dev-app.easyliao.com/auth-sso/oauth/web/login/view?redirectUri=${redirectUrl}&welcomeMessage=欢迎来到易聊CRM&pageTitle=SCRM-登录&appId=40000`;
+        if (envOption.env.VITE_APP_CURRENTMODE == 'local') {
+          let redirectUrl = window.location.origin + '/#/';
+          let url = `http://dev-app.easyliao.com/auth-sso/oauth/web/login/view?redirectUri=${redirectUrl}&welcomeMessage=欢迎来到易聊短信&pageTitle=易聊短信&appId=40001`;
           window.location.href = url;
           return;
         }

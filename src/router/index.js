@@ -8,39 +8,16 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
 import Layout from '@/pages/layout/index.vue';
 import envOption from "@/env";
+import store from '../store';
+
+const modulesFiles = import.meta.globEager('./routerConfig/*.js');
+let modules = [];
+for (const path in modulesFiles) {
+  console.log(modulesFiles[path].default);
+  modules = [].concat(modules, modulesFiles[path].default);
+}
+
 const routes = [
-  {
-    path: '/home',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('../pages/home/home.vue'),
-      },
-      {
-        path: 'mixins',
-        component: () => import('../pages/test/mixins.vue'),
-      },
-    ]
-  },
-  {
-    path: '/twotwotwotwo',
-    component: Layout,
-    children: [
-      {
-        path: 'sendMsg',
-        component: () => import('../pages/test/sendMsg.vue'),
-      },
-      {
-        path: 'filters',
-        component: () => import('../pages/test/filters.vue'),
-      },
-    ]
-  },
-  // {
-  //   path: '/',
-  //   component: () => import('../pages/home/home.vue'),
-  // },
   {
     path: '/globalProperties',
     component: () => import('../pages/test/globalProperties.vue'),
@@ -49,11 +26,6 @@ const routes = [
     path: '/inject',
     component: () => import('../pages/test/inject.vue'),
   },
-  // {
-  //   path: '/nextTickApi',
-  //   name: 'nextTickApi',
-  //   component: () => import('../pages/test/nextTickApi.vue'),
-  // },
   {
     path: '/attribute',
     component: () => import('../pages/test/attributeTest'),
@@ -66,17 +38,17 @@ const routes = [
     path: '/temp',
     component: () => import('../pages/test/temp'),
   },
-]
+].concat(modules);
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
 router.beforeEach(async (to, from, next) => {
+  console.log(to.path);
   await judgeLogin();
   if (to.path == '/') {
-    next({ path: "/home/index" })
-    router.replace("/home/index");
+    next({ path: "/textMessage/autograph" })
   } else {
     next();
   }
@@ -96,7 +68,8 @@ function judgeLogin() {
   let access_token = queryObj['access_token'];
   // 如果有access_token,直接存入本地缓存
   if (access_token) {
-    window.sessionStorage.setItem("access_token", access_token);
+    store.dispatch('user/setToken', access_token);
+    // window.sessionStorage.setItem("access_token", access_token);
     openRedirectUrl();
   }
 }
@@ -104,7 +77,7 @@ function judgeLogin() {
 // 判断是否需要重定向
 function openRedirectUrl() {
   if (envOption.env.VITE_APP_CURRENTMODE === 'local') {
-    window.location.href = window.location.origin
+    window.location.href = window.location.origin + '/#/textMessage/autograph';
   } else {
     window.location.href = window.location.origin + window.location.pathname
   }

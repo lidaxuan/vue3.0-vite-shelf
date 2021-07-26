@@ -50,6 +50,10 @@ app.provide('sideBarConfig', { // 侧边栏配置
   tooltip: false,
   effect: "light" || 'dark'
 }) // 所有组件接受
+app.provide('layoutConfig', { // 侧边栏配置
+  navBarVisible: true,
+  sideBarVisible: true,
+}) // 所有组件接受
 
 app.component('button-counter', {
   data: () => ({

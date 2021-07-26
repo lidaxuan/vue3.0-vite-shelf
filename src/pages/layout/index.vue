@@ -7,9 +7,9 @@
 
 <template>
   <div class="layout hmax flex flex-column">
-    <NavBar />
+    <NavBar v-if="layoutConfig.navBarVisible" />
     <div class="content wmax flex">
-      <SideBar @collapse="collapse"/>
+      <SideBar @collapse="collapse" v-if="layoutConfig.sideBarVisible"/>
       <div class="container f0-bg flex-item hmax flex flex-column">
         <MenuTag />
         <div class="scroll-box pt12 pl15 pr15 pb12 flex-item" v-cloak>
@@ -42,6 +42,11 @@ export default {
         { id: '3', cls: 'activ', text: '近 30 天', selected: false },
       ],
     };
+  },
+  inject: {
+    layoutConfig: {
+      from: 'layoutConfig',
+    },
   },
   computed: {},
   watch: {
